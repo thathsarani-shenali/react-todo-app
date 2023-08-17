@@ -1,0 +1,20 @@
+.todolistSection{
+    width: 70%;
+    padding-top: 30px;
+}
+
+.todolistSection h3{
+    color: skyblue;
+}
+
+.AddNewItemButton{
+    background-color: skyblue;
+    transition: background-color 0.3s ease;
+    color: black;
+    border-color: skyblue;
+}
+
+.AddNewItemButton:hover{
+    background-color: blueviolet;
+    border-color: blueviolet;
+}
