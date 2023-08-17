@@ -1,0 +1,14 @@
+.todoItemCard{
+    background-color: rgb(45, 45, 45);
+    border: 1px solid rgb(121, 121, 121);
+    color: white;
+}
+
+
+.trashButton {
+    transition: color 0.3s ease;
+  }
+  
+.trashButton:hover .trashIcon {
+    color: red; 
+}
