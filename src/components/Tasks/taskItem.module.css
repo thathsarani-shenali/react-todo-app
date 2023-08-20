@@ -4,6 +4,9 @@
     color: white;
 }
 
+.todoItemTitle p{
+    margin-bottom: 0px ;
+}
 
 .trashButton {
     transition: color 0.3s ease;
