@@ -1,5 +1,6 @@
 {
   "name": "react-todo-app",
+  "proxy": "https://crudapi.co.uk",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

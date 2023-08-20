@@ -5,36 +5,40 @@ import { useEffect,useState } from 'react';
 
 import Tasks from './Tasks/Tasks';
 
+
 const TodoList=()=>{
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [tasks, setTasks] = useState([]);
 
-    const fetchTasks = async (taskText) => {
+    const fetchTasks = async () => {
         setIsLoading(true);
         setError(null);
         try {
-        const response = await fetch(
-            'https://react-http-76e56-default-rtdb.firebaseio.com/todoItems.json'
-        );
+            const apiKey = 'K70amQMblSEBeyX2_W6MFST5jHS9OasJMD9W4gJMo7PvyNTSQA';
+            const apiUrl = '/api/v1/task';
+      
+            const headers = {
+              Authorization: `Bearer ${apiKey}`
+            };
+      
+            const response = await fetch(apiUrl, { headers });
+      
+            if (!response.ok) {
+              throw new Error('Request failed!');
+            }
+      
+            const data = await response.json();
+      
+            setTasks(data.items);
+          } catch (err) {
+            setError(err.message || 'Something went wrong!');
+          }
+          setIsLoading(false);
+    };
 
-        if (!response.ok) {
-            throw new Error('Request failed!');
-        }
-
-        const data = await response.json();
-
-        const loadedTasks = [];
-
-        for (const taskKey in data) {
-            loadedTasks.push({ id: taskKey, title: data[taskKey].title });
-        }
-
-        setTasks(loadedTasks);
-        } catch (err) {
-        setError(err.message || 'Something went wrong!');
-        }
-        setIsLoading(false);
+    const handleAddNewItem = () => {
+        fetchTasks();
     };
 
     useEffect(() => {
@@ -43,7 +47,7 @@ const TodoList=()=>{
 
     return (
         <section className={`${classes.todolistSection} mx-auto`}>
-            <AddNewItem/>
+            <AddNewItem onAddNewItem={handleAddNewItem} />
             <h3 className='py-2'>Todo List</h3>
             <hr/>
             <Tasks
