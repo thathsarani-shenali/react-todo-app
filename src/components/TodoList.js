@@ -51,10 +51,11 @@ const TodoList=()=>{
             <h3 className='py-2'>Todo List</h3>
             <hr/>
             <Tasks
-                items={tasks}
-                loading={isLoading}
-                error={error}
-                onFetch={fetchTasks}
+              items={tasks}
+              loading={isLoading}
+              error={error}
+              onFetch={fetchTasks}
+              setItems={setTasks}
             />
         </section>
     );

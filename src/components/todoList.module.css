@@ -18,3 +18,11 @@
     background-color: blueviolet;
     border-color: blueviolet;
 }
+
+.ModalHeader , .titleLabel{
+    color: black;
+}
+
+.inputField{
+    width: 80%;
+}

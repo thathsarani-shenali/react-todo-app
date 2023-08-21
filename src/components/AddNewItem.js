@@ -58,16 +58,18 @@ const AddNewItem = ({ onAddNewItem }) => {
       </Button>
 
       <Modal show={show} onHide={handleClose}>
-        <h3>Add new item</h3>
+        <Modal.Header>
+          <h4 className={classes.ModalHeader}>Add new item</h4>
+        </Modal.Header>
         <Modal.Body>
           <form>
-            <div>
-              <label htmlFor='title'>Title</label>
-              <input type='text' id='title' value={title} onChange={handleTitleChange} />
+            <div className='py-2 d-flex justify-content-between'>
+              <label className={classes.titleLabel} htmlFor='title'>Title</label>
+              <input className={classes.inputField} type='text' id='title' value={title} onChange={handleTitleChange} />
             </div>
             
-            <div className=''>
-              <Button variant="secondary" onClick={handleClose}>
+            <div className='py-4 d-flex justify-content-end'>
+              <Button variant="secondary" className='mx-4' onClick={handleClose}>
                 Close
               </Button>
               <Button variant="primary" onClick={handleConfirm}>
