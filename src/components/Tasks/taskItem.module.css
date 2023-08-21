@@ -15,3 +15,7 @@
 .trashButton:hover .trashIcon {
     color: red; 
 }
+
+.titleChanged{
+    text-decoration: line-through;
+}
