@@ -1,21 +1,21 @@
-.todoItemCard{
+.todoItemCard {
     background-color: rgb(45, 45, 45);
     border: 1px solid rgb(121, 121, 121);
     color: white;
 }
 
-.todoItemTitle p{
-    margin-bottom: 0px ;
+.todoItemTitle p {
+    margin-bottom: 0px;
 }
 
 .trashButton {
     transition: color 0.3s ease;
-  }
-  
-.trashButton:hover .trashIcon {
-    color: red; 
 }
 
-.titleChanged{
+.trashButton:hover .trashIcon {
+    color: red;
+}
+
+.titleChanged {
     text-decoration: line-through;
 }
