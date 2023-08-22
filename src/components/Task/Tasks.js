@@ -1,10 +1,12 @@
 import React from "react";
+import axios from "axios"; // Import Axios
+import emptyList from "../../task-list.png";
+
 import classes from "./taskItem.module.css";
 import TaskItem from "./TaskItem";
 import DeleteItem from "./DeleteItem";
 
 import { Card, Col, Row } from "react-bootstrap";
-// import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Tasks = (props) => {
   const handleDeleteItem = async (taskId) => {
@@ -24,43 +26,43 @@ const Tasks = (props) => {
       if (!response.ok) {
         throw new Error("Failed to delete item");
       }
-      props.onFetch();
+
+      const updatedTasks = props.items.filter((task) => task._uuid !== taskId);
+      props.setItems(updatedTasks);
     } catch (error) {
       console.error("Error deleting item:", error);
     }
   };
 
   const handleCheckboxToggle = async (taskId, completed) => {
-    const apiKey = "K70amQMblSEBeyX2_W6MFST5jHS9OasJMD9W4gJMo7PvyNTSQA";
-    const apiUrl = `/api/v1/task/${taskId}`;
+    try {
+      const apiKey = "K70amQMblSEBeyX2_W6MFST5jHS9OasJMD9W4gJMo7PvyNTSQA";
+      const apiUrl = `/api/v1/task/${taskId}`;
 
-    const headers = {
-      Authorization: `Bearer ${apiKey}`,
-    };
+      const headers = {
+        Authorization: `Bearer ${apiKey}`,
+      };
 
-    let response = "";
+      const updatedCompleted = !completed;
 
-    if (completed) {
-      response = await fetch(apiUrl, {
-        method: "PUT",
-        headers,
-        body: JSON.stringify({ completed: false }),
-      });
-    } else {
-      response = await fetch(apiUrl, {
-        method: "PUT",
-        headers,
-        body: JSON.stringify({ completed: true }),
-      });
+      await axios.put(apiUrl, { completed: updatedCompleted }, { headers });
+
+      const updatedTasks = props.items.map((task) =>
+        task._uuid === taskId ? { ...task, completed: updatedCompleted } : task
+      );
+
+      props.setItems(updatedTasks);
+    } catch (error) {
+      console.error("Error updating task:", error);
     }
-
-    if (!response.ok) {
-      throw new Error("Failed to update the task");
-    }
-    props.onFetch();
   };
 
-  let taskList = <h2>No tasks found. Start adding some!</h2>;
+  let taskList = (
+    <div className="text-center py-4">
+      <img src={emptyList} alt="emptyList" />
+      <h4 className="py-4">No tasks found. Start adding some!</h4>
+    </div>
+  );
 
   if (props.items.length > 0) {
     taskList = (

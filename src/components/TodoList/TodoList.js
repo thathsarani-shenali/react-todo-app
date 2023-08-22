@@ -1,9 +1,8 @@
+import React, { useEffect, useState } from "react";
 import classes from "./todoList.module.css";
-
-import AddNewItem from "./AddNewItem";
-import { useEffect, useState } from "react";
-
-import Tasks from "./Tasks/Tasks";
+import AddNewItem from "../NewItemForm/AddNewItem";
+import Tasks from "../Task/Tasks";
+import axios from "axios";
 
 const TodoList = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -21,15 +20,13 @@ const TodoList = () => {
         Authorization: `Bearer ${apiKey}`,
       };
 
-      const response = await fetch(apiUrl, { headers });
+      const response = await axios.get(apiUrl, { headers });
 
-      if (!response.ok) {
+      if (response.status !== 200) {
         throw new Error("Request failed!");
       }
 
-      const data = await response.json();
-
-      setTasks(data.items);
+      setTasks(response.data.items);
     } catch (err) {
       setError(err.message || "Something went wrong!");
     }

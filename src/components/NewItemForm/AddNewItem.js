@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import classes from "./todoList.module.css";
+import axios from "axios";
+
+import classes from "./newItem.module.css";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
@@ -11,7 +13,9 @@ const AddNewItem = ({ onAddNewItem }) => {
 
   const enteredTitleIsValid = title.trim() !== "";
   const inputIsInvalid = !enteredTitleIsValid && enteredTitleTouched;
-  const titleInputCasses = inputIsInvalid ? `${classes.formControlInvalid}` : "";
+  const titleInputCasses = inputIsInvalid
+    ? `${classes.formControlInvalid}`
+    : "";
 
   const handleClose = () => {
     setShow(false);
@@ -30,7 +34,7 @@ const AddNewItem = ({ onAddNewItem }) => {
   };
 
   const formSubmissionHandler = async (event) => {
-    console.log(title);
+    event.preventDefault();
     setEnteredTitleTouched(true);
 
     if (!enteredTitleIsValid) {
@@ -48,22 +52,16 @@ const AddNewItem = ({ onAddNewItem }) => {
 
       const newTask = [{ title, completed: false }];
 
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        headers,
-        body: JSON.stringify(newTask),
-      });
+      const response = await axios.post(apiUrl, newTask, { headers });
 
-      if (!response.ok) {
+      if (response.status === 201) {
+        handleClose();
+        onAddNewItem();
+        setTitle("");
+        setEnteredTitleTouched(false);
+      } else {
         throw new Error("Failed to add new item");
       }
-
-      handleClose();
-
-      onAddNewItem();
-
-      setTitle("");
-      setEnteredTitleTouched(false);
     } catch (error) {
       console.error("Error adding new item:", error);
     }
