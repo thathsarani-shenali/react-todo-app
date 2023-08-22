@@ -53,15 +53,16 @@ const AddNewItem = ({ onAddNewItem }) => {
       const newTask = [{ title, completed: false }];
 
       const response = await axios.post(apiUrl, newTask, { headers });
-
-      if (response.status === 201) {
-        handleClose();
-        onAddNewItem();
-        setTitle("");
-        setEnteredTitleTouched(false);
-      } else {
+      
+      if (!response.status === 201) {
         throw new Error("Failed to add new item");
       }
+
+      handleClose();
+      onAddNewItem();
+      setTitle("");
+      setEnteredTitleTouched(false);
+
     } catch (error) {
       console.error("Error adding new item:", error);
     }
@@ -79,7 +80,7 @@ const AddNewItem = ({ onAddNewItem }) => {
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={formSubmissionHandler} className={titleInputCasses}>
-            <div className="py-2 row">
+            <div className="pt-2 row">
               <label className={`${classes.titleLabel} col-2`} htmlFor="title">
                 Title
               </label>
@@ -94,7 +95,7 @@ const AddNewItem = ({ onAddNewItem }) => {
                 />
 
                 {inputIsInvalid && (
-                  <p className={classes.errorText}>Please enter a title</p>
+                  <p className={`${classes.errorText}`}>Please enter a title</p>
                 )}
               </div>
             </div>
