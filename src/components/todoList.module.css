@@ -1,28 +1,38 @@
-.todolistSection{
+.todolistSection {
     width: 60%;
     padding-top: 30px;
 }
 
-.todolistSection h3{
-    color: skyblue;
+.todolistSection h3 {
+    color: deepskyblue;
 }
 
-.AddNewItemButton{
-    background-color: skyblue;
+.AddNewItemButton {
+    background-color: deepskyblue;
     transition: background-color 0.3s ease;
     color: black;
-    border-color: skyblue;
+    border-color:deepskyblue;
 }
 
-.AddNewItemButton:hover{
+.AddNewItemButton:hover {
     background-color: blueviolet;
     border-color: blueviolet;
 }
 
-.ModalHeader , .titleLabel{
+.ModalHeader,
+.titleLabel {
     color: black;
 }
 
-.inputField{
-    width: 80%;
+.inputField {
+    width: 100%;
+}
+
+.formControlInvalid input {
+    border-color: red;
+    background-color: rgb(255, 212, 212);
+}
+
+.errorText {
+    color: red;
 }
