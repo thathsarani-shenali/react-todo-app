@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios"; // Import Axios
+import axios from "axios"; 
 import emptyList from "../../task-list.png";
 
 import classes from "./taskItem.module.css";
@@ -13,22 +13,20 @@ const Tasks = (props) => {
     try {
       const apiKey = "K70amQMblSEBeyX2_W6MFST5jHS9OasJMD9W4gJMo7PvyNTSQA";
       const apiUrl = `/api/v1/task/${taskId}`;
-
+  
       const headers = {
         Authorization: `Bearer ${apiKey}`,
       };
+  
+      const response = await axios.delete(apiUrl, { headers });
 
-      const response = await fetch(apiUrl, {
-        method: "DELETE",
-        headers,
-      });
-
-      if (!response.ok) {
+      if (!response.status===200) {
         throw new Error("Failed to delete item");
       }
 
       const updatedTasks = props.items.filter((task) => task._uuid !== taskId);
       props.setItems(updatedTasks);
+      
     } catch (error) {
       console.error("Error deleting item:", error);
     }
@@ -73,7 +71,7 @@ const Tasks = (props) => {
               <Row>
                 <Col className="my-aut0 col-2">
                   <input
-                    className="form-check-input"
+                    className={`${classes.checkbox} form-check-input`}
                     type="checkbox"
                     value=""
                     id={`checkbox-${task._uuid}`}
@@ -115,7 +113,7 @@ const Tasks = (props) => {
 
   return (
     <div>
-      <div className={classes.container}>{content}</div>
+      <div className={`${classes.container} pt-2`}>{content}</div>
     </div>
   );
 };

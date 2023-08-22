@@ -8,7 +8,17 @@
     margin-bottom: 0px;
 }
 
+.checkbox{
+    border-radius: 10px !important;
+}
+
+.checkbox:checked{
+    background-color: blueviolet !important;
+    border-color: blueviolet !important;
+}
+
 .trashButton {
+    color: white;
     transition: color 0.3s ease;
 }
 
@@ -18,4 +28,5 @@
 
 .titleChanged {
     text-decoration: line-through;
+    color: grey;
 }
