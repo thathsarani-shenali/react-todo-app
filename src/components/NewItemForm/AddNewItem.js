@@ -1,19 +1,18 @@
-import React, { useState } from "react";
-import axios from "axios";
-
+import React, { useState, useContext } from "react";
 import classes from "./newItem.module.css";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import { TodoContext } from "../../Store/todo-context";
 
-const AddNewItem = ({ onAddNewItem }) => {
+const AddNewItem = () => {
+  const { setTitle, title, handleAddTodo } = useContext(TodoContext);
+
   const [show, setShow] = useState(false);
-  const [title, setTitle] = useState("");
-
   const [enteredTitleTouched, setEnteredTitleTouched] = useState(false);
 
   const enteredTitleIsValid = title.trim() !== "";
   const inputIsInvalid = !enteredTitleIsValid && enteredTitleTouched;
-  const titleInputCasses = inputIsInvalid
+  const titleInputClasses = inputIsInvalid
     ? `${classes.formControlInvalid}`
     : "";
 
@@ -25,11 +24,11 @@ const AddNewItem = ({ onAddNewItem }) => {
 
   const handleShow = () => setShow(true);
 
-  const ttleInputchangeHandler = (event) => {
+  const titleInputChangeHandler = (event) => {
     setTitle(event.target.value);
   };
 
-  const ttleInputBlurHandler = (event) => {
+  const titleInputBlurHandler = () => {
     setEnteredTitleTouched(true);
   };
 
@@ -42,27 +41,10 @@ const AddNewItem = ({ onAddNewItem }) => {
     }
 
     try {
-      const apiKey = "K70amQMblSEBeyX2_W6MFST5jHS9OasJMD9W4gJMo7PvyNTSQA";
-      const apiUrl = "/api/v1/task";
-
-      const headers = {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      };
-
-      const newTask = [{ title, completed: false }];
-
-      const response = await axios.post(apiUrl, newTask, { headers });
-      
-      if (!response.status === 201) {
-        throw new Error("Failed to add new item");
-      }
-
+      await handleAddTodo(title); // Use the context function
       handleClose();
-      onAddNewItem();
       setTitle("");
       setEnteredTitleTouched(false);
-
     } catch (error) {
       console.error("Error adding new item:", error);
     }
@@ -79,7 +61,7 @@ const AddNewItem = ({ onAddNewItem }) => {
           <h4 className={classes.ModalHeader}>Add new item</h4>
         </Modal.Header>
         <Modal.Body>
-          <form onSubmit={formSubmissionHandler} className={titleInputCasses}>
+          <form onSubmit={formSubmissionHandler} className={titleInputClasses}>
             <div className="pt-2 row">
               <label className={`${classes.titleLabel} col-2`} htmlFor="title">
                 Title
@@ -90,8 +72,8 @@ const AddNewItem = ({ onAddNewItem }) => {
                   type="text"
                   id="title"
                   value={title}
-                  onChange={ttleInputchangeHandler}
-                  onBlur={ttleInputBlurHandler}
+                  onChange={titleInputChangeHandler}
+                  onBlur={titleInputBlurHandler}
                 />
 
                 {inputIsInvalid && (
