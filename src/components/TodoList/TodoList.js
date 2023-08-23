@@ -1,57 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext } from "react";
 import classes from "./todoList.module.css";
 import AddNewItem from "../NewItemForm/AddNewItem";
-import Tasks from "../Task/Tasks";
-import axios from "axios";
+import Tasks from "./Tasks";
+import { TodoContext } from "../../Store/todo-context"; // Import the TodoContext
 
 const TodoList = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [tasks, setTasks] = useState([]);
-
-  const fetchTasks = async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const apiKey = "K70amQMblSEBeyX2_W6MFST5jHS9OasJMD9W4gJMo7PvyNTSQA";
-      const apiUrl = "/api/v1/task";
-
-      const headers = {
-        Authorization: `Bearer ${apiKey}`,
-      };
-
-      const response = await axios.get(apiUrl, { headers });
-
-      if (response.status !== 200) {
-        throw new Error("Request failed!");
-      }
-
-      setTasks(response.data.items);
-    } catch (err) {
-      setError(err.message || "Something went wrong!");
-    }
-    setIsLoading(false);
-  };
-
-  const handleAddNewItem = () => {
-    fetchTasks();
-  };
-
-  useEffect(() => {
-    fetchTasks();
-  }, []);
+  const { items, loading, error, fetchTasks, handleAddTodo } =
+    useContext(TodoContext);
 
   return (
     <section className={`${classes.todolistSection} mx-auto`}>
-      <AddNewItem onAddNewItem={handleAddNewItem} />
+      <AddNewItem onAddNewItem={handleAddTodo} />
       <h3 className="py-2">Todo List</h3>
       <hr />
       <Tasks
-        items={tasks}
-        loading={isLoading}
+        items={items}
+        loading={loading}
         error={error}
         onFetch={fetchTasks}
-        setItems={setTasks}
       />
     </section>
   );
